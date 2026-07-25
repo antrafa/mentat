@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# Initializes the Memory Vault directory structure at ~/.memory_vault
+# Initializes the Brain Vault directory structure at ~/.brain_vault
 # Safe to run multiple times — skips if vault already exists.
 set -euo pipefail
 
-VAULT_DIR="${HOME}/.memory_vault"
+VAULT_DIR="${HOME}/.brain_vault"
 
 if [[ -d "$VAULT_DIR/entries" ]]; then
   echo "✓ Vault already exists at $VAULT_DIR"
   exit 0
 fi
 
-echo "Creating Memory Vault at $VAULT_DIR..."
+echo "Creating Brain Vault at $VAULT_DIR..."
 
 mkdir -p "$VAULT_DIR"/{entries,maps,daily}
 
 # --- Maps of Content ---
 
-for type in bugs decisions features learnings snippets; do
+for type in notes ideas journals bugs decisions features learnings snippets; do
   title="$(echo "$type" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
   cat > "$VAULT_DIR/maps/$type.md" << EOF
 # $title
@@ -30,10 +30,13 @@ done
 # --- Index (dashboard) ---
 
 cat > "$VAULT_DIR/index.md" << 'EOF'
-# Memory Vault
+# Brain Vault
 
 ## Maps of Content
 
+- [[notes]] — Notas e registros gerais
+- [[ideas]] — Ideias soltas e projetos futuros
+- [[journals]] — Reflexões e diários
 - [[bugs]] — Bugs corrigidos e sessões de debug
 - [[decisions]] — Decisões de arquitetura e design
 - [[features]] — Features construídas

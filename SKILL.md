@@ -1,13 +1,13 @@
 ---
-name: memory-vault
+name: brain-vault
 description: >-
-  Persistent knowledge vault — Obsidian-compatible markdown with wiki-links, tags, and maps of content.
-  Use when the user wants to remember something (a bug fix, decision, feature, learning, or pattern),
-  recall or search past entries, review recent work, or when another skill produces knowledge worth preserving.
-trigger: /memory
+  Persistent knowledge and general memory vault — Obsidian-compatible markdown with wiki-links, tags, and maps of content.
+  Use when the user wants to remember anything (a note, idea, journal, bug fix, decision, feature, learning, or pattern),
+  recall or search past entries, review recent work, or export their memory.
+trigger: /brain
 ---
 
-All entries live in `~/.memory_vault/` as an Obsidian-ready vault. On every invocation, check if `~/.memory_vault/entries/` exists. If not, run this skill's `scripts/init-vault.sh` to create the full vault structure before proceeding.
+All entries live in `~/.brain_vault/` as an Obsidian-ready vault. On every invocation, check if `~/.brain_vault/entries/` exists. If not, run this skill's `scripts/init-vault.sh` to create the full vault structure before proceeding.
 
 Three concepts anchor every operation:
 
@@ -19,15 +19,15 @@ Three concepts anchor every operation:
 
 Create a new **entry**.
 
-1. **Classify.** Determine the entry type from context: `bug`, `decision`, `feature`, `learning`, or `snippet`. If ambiguous, ask the user.
+1. **Classify.** Determine the entry type from context: `note`, `idea`, `journal`, `bug`, `decision`, `feature`, `learning`, or `snippet`. If ambiguous, ask the user.
 
-2. **Thread.** Identify every concept worth linking: project names, technologies, libraries, patterns, related past entries. Each becomes a `[[wiki-link]]` in kebab-case. Err toward more links — orphan entries are invisible in the graph. Search the vault (`grep -rli` across `~/.memory_vault/entries/`) for existing mentions of the same concepts; if related entries exist, add backlinks in both directions.
+2. **Thread.** Identify every concept worth linking: people, projects, technologies, ideas, related past entries. Each becomes a `[[wiki-link]]` in kebab-case. Err toward more links — orphan entries are invisible in the graph. Search the vault (`grep -rli` across `~/.brain_vault/entries/`) for existing mentions of the same concepts; if related entries exist, add backlinks in both directions.
 
-3. **Write.** Create the entry at `~/.memory_vault/entries/YYYY-MM-DD-slug.md` using the template for its type (see [FORMAT.md](references/FORMAT.md)). Slug is lowercase-kebab-case, max 6 words. Completion: file exists, frontmatter is valid YAML, every identified concept has a wiki-link in the body.
+3. **Write.** Create the entry at `~/.brain_vault/entries/YYYY-MM-DD-slug.md` using the template for its type (see [FORMAT.md](references/FORMAT.md)). Slug is lowercase-kebab-case, max 6 words. Completion: file exists, frontmatter is valid YAML, every identified concept has a wiki-link in the body.
 
 4. **Index.** Append a link line to:
-   - The type's **map** at `~/.memory_vault/maps/{type}s.md` under `## Recent`
-   - Today's daily note at `~/.memory_vault/daily/YYYY-MM-DD.md` (create from daily template if missing — see [FORMAT.md](references/FORMAT.md))
+   - The type's **map** at `~/.brain_vault/maps/{type}s.md` under `## Recent`
+   - Today's daily note at `~/.brain_vault/daily/YYYY-MM-DD.md` (create from daily template if missing — see [FORMAT.md](references/FORMAT.md))
 
    Completion: both files contain a line linking to the new entry.
 
@@ -37,11 +37,18 @@ After indexing, confirm to the user: entry path, type, and thread count (number 
 
 Search the vault and present matching **entries**.
 
-1. **Search.** Parse the user's query into key terms. Search across `~/.memory_vault/entries/` using `grep -rli` for content matches, and `grep -l` in frontmatter for tag/type matches. Also check relevant **maps** for quick category hits. Present matches as clickable file links with title, date, type, and first-line summary.
+1. **Search.** Parse the user's query into key terms. Search across `~/.brain_vault/entries/` using `grep -rli` for content matches, and `grep -l` in frontmatter for tag/type matches. Also check relevant **maps** for quick category hits. Present matches as clickable file links with title, date, type, and first-line summary.
 
 2. **Follow threads.** If the user wants deeper context, or fewer than 3 results were found, read the matched entries and follow their `[[wiki-links]]` one hop outward. Present the expanded thread as a chain showing how entries connect.
 
 Completion: every matching entry presented with file links, or "no entries match" stated explicitly. If the vault is empty, say so.
+
+## Export
+
+Export the entire vault so the user can back it up or move it to another computer.
+
+1. **Zip.** Run `zip -r ~/Desktop/brain_vault_export_$(date +%Y%m%d).zip ~/.brain_vault`
+2. **Confirm.** Inform the user that the export was created on their Desktop.
 
 ## Review
 

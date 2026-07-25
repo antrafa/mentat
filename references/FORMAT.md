@@ -8,7 +8,7 @@ Every entry starts with YAML frontmatter:
 
 ```yaml
 ---
-type: bug | decision | feature | learning | snippet
+type: note | idea | journal | bug | decision | feature | learning | snippet
 date: YYYY-MM-DD
 tags: [tag1, tag2]
 project: project-name
@@ -18,6 +18,83 @@ related: ["[[entry-slug]]"]
 ```
 
 ## Entry Templates
+
+### Note
+
+```markdown
+---
+type: note
+date: {date}
+tags: [{tags}]
+project: {project}
+status: open
+related: []
+---
+
+# {title}
+
+## Tópicos Principais
+
+{resumo dos tópicos da nota}
+
+## Detalhes
+
+{corpo da nota}
+```
+
+### Idea
+
+```markdown
+---
+type: idea
+date: {date}
+tags: [{tags}]
+project: {project}
+status: open
+related: []
+---
+
+# {title}
+
+## O que é
+
+{descrição rápida da ideia}
+
+## Por que importa
+
+{qual o valor ou problema que resolve}
+
+## Próximos passos
+
+{o que precisa acontecer para virar realidade}
+```
+
+### Journal
+
+```markdown
+---
+type: journal
+date: {date}
+tags: [{tags}]
+project: {project}
+status: open
+related: []
+---
+
+# {title}
+
+## Reflexão do Dia
+
+{o que aconteceu, pensamentos, estado mental}
+
+## Pontos Positivos
+
+- {coisa 1}
+
+## Desafios
+
+- {desafio 1}
+```
 
 ### Bug
 
@@ -183,7 +260,7 @@ related: []
 
 ## Map of Content (MOC)
 
-Cada tipo tem um MOC em `~/.memory_vault/maps/{type}s.md`:
+Cada tipo tem um MOC em `~/.brain_vault/maps/{type}s.md`:
 
 ```markdown
 # {Type}s
@@ -203,7 +280,7 @@ Ao adicionar uma entrada, insira na seção `## Recent` no topo. Quando um proje
 
 ## Daily Note
 
-Notas diárias vivem em `~/.memory_vault/daily/YYYY-MM-DD.md`:
+Notas diárias vivem em `~/.brain_vault/daily/YYYY-MM-DD.md`:
 
 ```markdown
 # {YYYY-MM-DD}
@@ -215,7 +292,7 @@ Notas diárias vivem em `~/.memory_vault/daily/YYYY-MM-DD.md`:
 
 ## Index
 
-O arquivo `~/.memory_vault/index.md` é o dashboard do vault:
+O arquivo `~/.brain_vault/index.md` é o dashboard do vault:
 
 ```markdown
 # Memory Vault
