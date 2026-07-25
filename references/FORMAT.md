@@ -260,7 +260,7 @@ related: []
 
 ## Map of Content (MOC)
 
-Cada tipo tem um MOC em `~/.brain_vault/maps/{type}s.md`:
+Cada tipo tem um MOC em `~/.mentat/maps/{type}s.md`:
 
 ```markdown
 # {Type}s
@@ -280,7 +280,7 @@ Ao adicionar uma entrada, insira na seção `## Recent` no topo. Quando um proje
 
 ## Daily Note
 
-Notas diárias vivem em `~/.brain_vault/daily/YYYY-MM-DD.md`:
+Notas diárias vivem em `~/.mentat/daily/YYYY-MM-DD.md`:
 
 ```markdown
 # {YYYY-MM-DD}
@@ -292,7 +292,7 @@ Notas diárias vivem em `~/.brain_vault/daily/YYYY-MM-DD.md`:
 
 ## Index
 
-O arquivo `~/.brain_vault/index.md` é o dashboard do vault:
+O arquivo `~/.mentat/index.md` é o dashboard do vault:
 
 ```markdown
 # Memory Vault

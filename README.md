@@ -1,10 +1,15 @@
-# Memory Vault
+# Mentat (Memory Vault)
 
-Persistent knowledge vault for AI coding agents. Stores bug fixes, decisions, features, learnings, and code patterns as Obsidian-compatible markdown with wiki-links, tags, and maps of content.
+> *"It is by will alone I set my mind in motion."*
+> — Mentat Mantra (Dune)
+
+In the *Dune* universe, after computers are banned, human **Mentats** are trained to possess supreme capabilities of computation, logic, and photographic memory. This skill acts as your personal Mentat — a persistent knowledge vault that never forgets.
+
+It stores bug fixes, decisions, features, learnings, code patterns, ideas, and daily notes as Obsidian-compatible markdown with wiki-links, tags, and maps of content.
 
 ## What it does
 
-When you work with an AI coding agent, knowledge gets lost between sessions — bugs you fixed, decisions you made, patterns you discovered. Memory Vault captures these as structured markdown entries connected by `[[wiki-links]]`, building a searchable knowledge graph over time.
+When you work with an AI coding agent, knowledge gets lost between sessions — bugs you fixed, decisions you made, patterns you discovered. Mentat captures these as structured markdown entries connected by `[[wiki-links]]`, building a searchable knowledge graph over time.
 
 **Three operations:**
 
@@ -13,23 +18,17 @@ When you work with an AI coding agent, knowledge gets lost between sessions — 
 | **Remember** | Creates a new entry from context — classifies it, threads wiki-links to related concepts, indexes in the appropriate map |
 | **Recall** | Searches the vault by content, tags, or type — follows wiki-link threads for deeper context |
 | **Review** | Shows recent activity — entries from the last 7 days with stats |
+| **Export** | Zips your entire vault to your Desktop for backup |
 
-**Five entry types:**
-
-| Type | When to use |
-|------|-------------|
-| `bug` | Bug fixed — symptoms, root cause, fix, lessons |
-| `decision` | Technical/architectural decision — options, choice, rationale |
-| `feature` | Feature built — approach, key files, caveats |
-| `learning` | Something learned — insight, context, application |
-| `snippet` | Reusable code pattern — when to use, code, notes |
+**Triggers:**
+You can invoke the skill using `/mentat` or `/brain`.
 
 ## Vault structure
 
-Everything lives in `~/.memory_vault/`, which opens directly as an Obsidian vault:
+Everything lives in `~/.mentat/`, which opens directly as an Obsidian vault:
 
 ```
-~/.memory_vault/
+~/.mentat/
 ├── entries/          ← all entries (flat, connected by wiki-links)
 ├── maps/             ← Maps of Content by type (bugs.md, decisions.md, ...)
 ├── daily/            ← daily notes (chronological index)

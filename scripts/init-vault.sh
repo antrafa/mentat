@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Initializes the Brain Vault directory structure at ~/.brain_vault
+# Initializes the Mentat Vault directory structure at ~/.mentat
 # Safe to run multiple times — skips if vault already exists.
 set -euo pipefail
 
-VAULT_DIR="${HOME}/.brain_vault"
+VAULT_DIR="${HOME}/.mentat"
 
 if [[ -d "$VAULT_DIR/entries" ]]; then
   echo "✓ Vault already exists at $VAULT_DIR"
   exit 0
 fi
 
-echo "Creating Brain Vault at $VAULT_DIR..."
+echo "Creating Mentat Vault at $VAULT_DIR..."
 
 mkdir -p "$VAULT_DIR"/{entries,maps,daily}
 
@@ -30,7 +30,7 @@ done
 # --- Index (dashboard) ---
 
 cat > "$VAULT_DIR/index.md" << 'EOF'
-# Brain Vault
+# Mentat Vault
 
 ## Maps of Content
 
