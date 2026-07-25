@@ -4,6 +4,7 @@ description: >-
   Persistent knowledge vault — Obsidian-compatible markdown with wiki-links, tags, and maps of content.
   Use when the user wants to remember something (a bug fix, decision, feature, learning, or pattern),
   recall or search past entries, review recent work, or when another skill produces knowledge worth preserving.
+trigger: /memory
 ---
 
 All entries live in `~/.memory_vault/` as an Obsidian-ready vault. On every invocation, check if `~/.memory_vault/entries/` exists. If not, run this skill's `scripts/init-vault.sh` to create the full vault structure before proceeding.
