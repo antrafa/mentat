@@ -12,11 +12,26 @@ fi
 
 echo "Creating Mentat Vault at $VAULT_DIR..."
 
-mkdir -p "$VAULT_DIR"/{entries,maps,daily}
+mkdir -p "$VAULT_DIR"/{entries,maps,daily,archive}
+
+if [[ ! -f "$VAULT_DIR/core-memory.md" ]]; then
+  cat > "$VAULT_DIR/core-memory.md" << 'EOF'
+# Core Memory & Intent
+
+## Objetivo Atual (Intent Anchor)
+(Defina o objetivo principal do momento)
+
+## Regras e Restrições
+- (Restrição 1)
+
+## Estado do Mundo
+(Resumo rápido do projeto)
+EOF
+fi
 
 # --- Maps of Content ---
 
-for type in notes ideas journals bugs decisions features learnings snippets; do
+for type in notes ideas journals bugs decisions features learnings snippets episodics schemas; do
   title="$(echo "$type" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
   cat > "$VAULT_DIR/maps/$type.md" << EOF
 # $title

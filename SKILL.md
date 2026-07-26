@@ -21,29 +21,39 @@ Three concepts anchor every operation:
 
 Create a new **entry**.
 
-1. **Classify.** Determine the entry type from context: `note`, `idea`, `journal`, `bug`, `decision`, `feature`, `learning`, or `snippet`. If ambiguous, ask the user.
-
-2. **Thread.** Identify every concept worth linking: people, projects, technologies, ideas, related past entries. Each becomes a `[[wiki-link]]` in kebab-case. Err toward more links — orphan entries are invisible in the graph. Search the vault (`grep -rli` across `~/.mentat/entries/`) for existing mentions of the same concepts; if related entries exist, add backlinks in both directions.
-
-3. **Write.** Create the entry at `~/.mentat/entries/YYYY-MM-DD-slug.md` using the template for its type (see [FORMAT.md](references/FORMAT.md)). Slug is lowercase-kebab-case, max 6 words. Completion: file exists, frontmatter is valid YAML, every identified concept has a wiki-link in the body.
-
-4. **Index.** Append a link line to:
-   - The type's **map** at `~/.mentat/maps/{type}s.md` under `## Recent`
-   - Today's daily note at `~/.mentat/daily/YYYY-MM-DD.md` (create from daily template if missing — see [FORMAT.md](references/FORMAT.md))
-
-   Completion: both files contain a line linking to the new entry.
-
-After indexing, confirm to the user: entry path, type, and thread count (number of wiki-links created).
+1. **Curate (Validity Gate).** Evaluate if the information is trivial, obvious, or irrelevant long-term. If it is, stop and tell the user you think it's trivial. If the user explicitly insists, proceed anyway.
+2. **Classify.** Determine the entry type from context: `note`, `idea`, `journal`, `bug`, `decision`, `feature`, `learning`, `snippet`, `episodic`, or `schema`.
+3. **Thread.** Identify every concept worth linking: people, projects, technologies, ideas, related past entries. Each becomes a `[[wiki-link]]` in kebab-case. Err toward more links — orphan entries are invisible in the graph. Search the vault (`grep -rli` across `~/.mentat/entries/`) for existing mentions of the same concepts; if related entries exist, add backlinks in both directions.
+4. **Write.** Create the entry at `~/.mentat/entries/YYYY-MM-DD-slug.md` using the template for its type (see [FORMAT.md](references/FORMAT.md)). Slug is lowercase-kebab-case, max 6 words. **Use atomic bullets** instead of long paragraphs. Completion: file exists, frontmatter has `salience: 100` and `usage_count: 0`.
+5. **Index.** Append a link line to the type's map and today's daily note.
 
 ## Recall
 
 Search the vault and present matching **entries**.
 
-1. **Search.** Parse the user's query into key terms. Search across `~/.mentat/entries/` using `grep -rli` for content matches, and `grep -l` in frontmatter for tag/type matches. Also check relevant **maps** for quick category hits. Present matches as clickable file links with title, date, type, and first-line summary.
+1. **Search.** Parse the user's query into key terms. Search across `~/.mentat/entries/` and **maps**. Present matches as clickable file links.
+2. **Follow threads.** If the user wants deeper context, read the matched entries and follow their `[[wiki-links]]` one hop outward.
+3. **Reconsolidate.** For every entry you read that proved useful in answering the user, edit its file to increment `usage_count` by 1 and `salience` by 10. This makes useful memories stronger over time.
 
-2. **Follow threads.** If the user wants deeper context, or fewer than 3 results were found, read the matched entries and follow their `[[wiki-links]]` one hop outward. Present the expanded thread as a chain showing how entries connect.
+## Load
 
-Completion: every matching entry presented with file links, or "no entries match" stated explicitly. If the vault is empty, say so.
+Load the core memory to establish high-level context.
+
+1. **Read.** Read `~/.mentat/core-memory.md`. If it doesn't exist or is empty, ask the user what the current Intent Anchor should be.
+2. **Adopt.** Use this core memory to anchor your current session. Do not load this automatically unless invoked by the user (e.g. `/mentat load`).
+
+## Consolidate
+
+Create a Schema from scattered knowledge.
+
+1. **Analyze.** Find related entries across the vault that share a common pattern.
+2. **Synthesize.** Create a new `schema` entry that abstracts the patterns (e.g., "Standard Auth Flow"). Link the source entries in the `related` frontmatter.
+
+## Groom
+
+Maintain vault health by decaying old memories.
+
+1. **Decay.** Reduce `salience` of older entries. If an entry hasn't been used and `salience` drops below 10, move it to `~/.mentat/archive/`.
 
 ## Export
 

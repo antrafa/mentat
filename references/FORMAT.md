@@ -8,16 +8,87 @@ Every entry starts with YAML frontmatter:
 
 ```yaml
 ---
-type: note | idea | journal | bug | decision | feature | learning | snippet
+type: note | idea | journal | bug | decision | feature | learning | snippet | episodic | schema
 date: YYYY-MM-DD
 tags: [tag1, tag2]
 project: project-name
+salience: 100
+usage_count: 0
 status: open | resolved | superseded
 related: ["[[entry-slug]]"]
 ---
 ```
 
+## Core Memory
+
+O arquivo `~/.mentat/core-memory.md` é a âncora de contexto do agente, lido apenas sob demanda.
+
+```markdown
+# Core Memory & Intent
+
+## Objetivo Atual (Intent Anchor)
+{O grande objetivo ou missão em andamento}
+
+## Regras e Restrições
+- {restrição 1}
+- {restrição 2}
+
+## Estado do Mundo
+{resumo rápido do contexto geral atual, max 500 palavras}
+```
+
 ## Entry Templates
+
+> **ATENÇÃO:** O Mentat prefere **Atomic Bullets**. Não escreva parágrafos longos. Destile a informação em tópicos diretos, concisos e acionáveis.
+
+### Episodic
+
+```markdown
+---
+type: episodic
+date: {date}
+tags: [{tags}]
+project: {project}
+salience: 100
+usage_count: 0
+status: resolved
+related: []
+---
+
+# {title}
+
+## Evento
+
+- **Quando:** {YYYY-MM-DD HH:MM}
+- **Quem:** {Claude / Codex / Usuário}
+- **Ação:** {O que foi feito de forma atômica}
+
+## Resultado
+{Impacto da ação}
+```
+
+### Schema
+
+```markdown
+---
+type: schema
+date: {date}
+tags: [{tags}]
+project: {project}
+salience: 200
+usage_count: 0
+status: open
+related: ["[[entry-1]]", "[[entry-2]]"]
+---
+
+# {title}
+
+## Padrão Abstrato
+{A regra geral ou padrão derivado das várias entries relacionadas}
+
+## Aplicação
+{Como aplicar esse padrão no futuro}
+```
 
 ### Note
 
