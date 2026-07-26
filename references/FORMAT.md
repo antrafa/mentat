@@ -14,6 +14,7 @@ tags: [tag1, tag2]
 project: project-name
 salience: 100
 usage_count: 0
+last_accessed: YYYY-MM-DD
 status: open | resolved | superseded
 related: ["[[entry-slug]]"]
 ---
@@ -21,25 +22,48 @@ related: ["[[entry-slug]]"]
 
 ## Core Memory
 
-O arquivo `~/.mentat/core-memory.md` é a âncora de contexto do agente, lido apenas sob demanda.
+The vault supports one global core memory (`~/.mentat/core-memory.md`) and optional per-project core memories (`~/.mentat/core-memory-{project}.md`). Both use the same template (canonical source — `init-vault.sh` creates the initial file, but this template governs future edits). These are read on demand via the **Load** operation.
 
 ```markdown
 # Core Memory & Intent
 
-## Objetivo Atual (Intent Anchor)
-{O grande objetivo ou missão em andamento}
+## Intent Anchor
+{The current overarching objective or mission}
 
-## Regras e Restrições
-- {restrição 1}
-- {restrição 2}
+## Rules & Constraints
+- {constraint 1}
+- {constraint 2}
 
-## Estado do Mundo
-{resumo rápido do contexto geral atual, max 500 palavras}
+## World State
+{brief summary of the current general context, max 500 words}
+```
+
+## User Profile
+
+The file `~/.mentat/profile.md` stores persistent information about the user. Created via the **Profile** operation. One profile per vault.
+
+```markdown
+# Profile
+
+## Identity
+- **Name:** {name}
+- **Role:** {role or profession}
+- **Language:** {preferred communication language}
+
+## Stack
+- **Languages:** {programming languages, e.g. [[typescript]], [[python]]}
+- **Frameworks:** {preferred frameworks, e.g. [[nextjs]], [[fastapi]]}
+- **Tools:** {editors, CLI tools, OS}
+
+## Preferences
+- {working style notes, communication preferences, conventions to respect}
 ```
 
 ## Entry Templates
 
-> **ATENÇÃO:** O Mentat prefere **Atomic Bullets**. Não escreva parágrafos longos. Destile a informação em tópicos diretos, concisos e acionáveis.
+> **Atomic Bullets rule:** Mentat always prefers atomic bullets over long paragraphs. Distill information into direct, concise, actionable bullet points.
+
+> **Language rule:** The section headings in the templates below are written in Portuguese as examples. When creating entries, **translate all section headings to match the language the user is communicating in.** The frontmatter keys (`type`, `status`, `related`, etc.) are always in English.
 
 ### Episodic
 
@@ -51,6 +75,7 @@ tags: [{tags}]
 project: {project}
 salience: 100
 usage_count: 0
+last_accessed: {date}
 status: resolved
 related: []
 ---
@@ -77,6 +102,7 @@ tags: [{tags}]
 project: {project}
 salience: 200
 usage_count: 0
+last_accessed: {date}
 status: open
 related: ["[[entry-1]]", "[[entry-2]]"]
 ---
@@ -98,6 +124,9 @@ type: note
 date: {date}
 tags: [{tags}]
 project: {project}
+salience: 100
+usage_count: 0
+last_accessed: {date}
 status: open
 related: []
 ---
@@ -121,6 +150,9 @@ type: idea
 date: {date}
 tags: [{tags}]
 project: {project}
+salience: 100
+usage_count: 0
+last_accessed: {date}
 status: open
 related: []
 ---
@@ -148,6 +180,9 @@ type: journal
 date: {date}
 tags: [{tags}]
 project: {project}
+salience: 100
+usage_count: 0
+last_accessed: {date}
 status: open
 related: []
 ---
@@ -175,6 +210,9 @@ type: bug
 date: {date}
 tags: [{tags}]
 project: {project}
+salience: 100
+usage_count: 0
+last_accessed: {date}
 status: resolved
 related: []
 ---
@@ -210,6 +248,9 @@ type: decision
 date: {date}
 tags: [{tags}]
 project: {project}
+salience: 100
+usage_count: 0
+last_accessed: {date}
 status: open
 related: []
 ---
@@ -246,6 +287,9 @@ type: feature
 date: {date}
 tags: [{tags}]
 project: {project}
+salience: 100
+usage_count: 0
+last_accessed: {date}
 status: resolved
 related: []
 ---
@@ -277,6 +321,9 @@ type: learning
 date: {date}
 tags: [{tags}]
 project: {project}
+salience: 100
+usage_count: 0
+last_accessed: {date}
 status: open
 related: []
 ---
@@ -308,6 +355,9 @@ type: snippet
 date: {date}
 tags: [{tags}]
 project: {project}
+salience: 100
+usage_count: 0
+last_accessed: {date}
 status: open
 related: []
 ---
@@ -370,16 +420,23 @@ O arquivo `~/.mentat/index.md` é o dashboard do vault:
 
 ## Maps of Content
 
+- [[notes]] — Notas e registros gerais
+- [[ideas]] — Ideias soltas e projetos futuros
+- [[journals]] — Reflexões e diários
 - [[bugs]] — Bugs corrigidos e sessões de debug
 - [[decisions]] — Decisões de arquitetura e design
 - [[features]] — Features construídas
 - [[learnings]] — Coisas aprendidas
 - [[snippets]] — Padrões de código e receitas
+- [[episodics]] — Eventos e ações registrados
+- [[schemas]] — Padrões abstratos sintetizados
 
 ## Entradas recentes
 
 (últimas 10 entradas linkadas aqui)
 ```
+
+> **Regra de manutenção:** Insira novos links no topo da seção "Entradas recentes". Se houver mais de 10 entradas, remova a mais antiga (última da lista) para manter o limite.
 
 ## Convenções de nomenclatura
 
@@ -394,6 +451,7 @@ O arquivo `~/.mentat/index.md` é o dashboard do vault:
 
 Categorias de tag para manter consistência:
 
+- `#type/` — tipo da entry, sempre incluir como primeiro tag (`#type/bug`, `#type/note`, `#type/schema`)
 - `#lang/` — linguagens (`#lang/typescript`, `#lang/python`)
 - `#framework/` — frameworks (`#framework/nextjs`, `#framework/fastapi`)
 - `#infra/` — infraestrutura (`#infra/docker`, `#infra/aws`)
