@@ -18,14 +18,14 @@ if [[ ! -f "$VAULT_DIR/core-memory.md" ]]; then
   cat > "$VAULT_DIR/core-memory.md" << 'EOF'
 # Core Memory & Intent
 
-## Objetivo Atual (Intent Anchor)
-(Defina o objetivo principal do momento)
+## Intent Anchor
+(Define the current main objective)
 
-## Regras e Restrições
-- (Restrição 1)
+## Rules & Constraints
+- (Constraint 1)
 
-## Estado do Mundo
-(Resumo rápido do projeto)
+## World State
+(Quick summary of the project context)
 EOF
 fi
 
@@ -39,7 +39,7 @@ for type in notes ideas journals bugs decisions features learnings snippets epis
 
 ## Recent
 
-## Por projeto
+## By Project
 EOF
   fi
 done
@@ -52,18 +52,18 @@ if [[ ! -f "$VAULT_DIR/index.md" ]]; then
 
 ## Maps of Content
 
-- [[notes]] — Notas e registros gerais
-- [[ideas]] — Ideias soltas e projetos futuros
-- [[journals]] — Reflexões e diários
-- [[bugs]] — Bugs corrigidos e sessões de debug
-- [[decisions]] — Decisões de arquitetura e design
-- [[features]] — Features construídas
-- [[learnings]] — Coisas aprendidas
-- [[snippets]] — Padrões de código e receitas
-- [[episodics]] — Eventos e ações registrados
-- [[schemas]] — Padrões abstratos sintetizados
+- [[notes]] — General notes and logs
+- [[ideas]] — Loose ideas and future projects
+- [[journals]] — Reflections and journals
+- [[bugs]] — Fixed bugs and debug sessions
+- [[decisions]] — Architecture and design decisions
+- [[features]] — Built features
+- [[learnings]] — Things learned
+- [[snippets]] — Code patterns and recipes
+- [[episodics]] — Recorded events and actions
+- [[schemas]] — Synthesized abstract patterns
 
-## Entradas recentes
+## Recent Entries
 EOF
 fi
 
@@ -105,7 +105,7 @@ fi
 
 echo "✓ Vault initialized at $VAULT_DIR"
 echo ""
-echo "Para usar no Obsidian:"
-echo "  1. Abra o Obsidian"
+echo "To use in Obsidian:"
+echo "  1. Open Obsidian"
 echo "  2. File → Open vault"
-echo "  3. Selecione a pasta: $VAULT_DIR"
+echo "  3. Select folder: $VAULT_DIR"

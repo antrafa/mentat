@@ -63,8 +63,6 @@ The file `~/.mentat/profile.md` stores persistent information about the user. Cr
 
 > **Atomic Bullets rule:** Mentat always prefers atomic bullets over long paragraphs. Distill information into direct, concise, actionable bullet points.
 
-> **Language rule:** The section headings in the templates below are written in Portuguese as examples. When creating entries, **translate all section headings to match the language the user is communicating in.** The frontmatter keys (`type`, `status`, `related`, etc.) are always in English.
-
 ### Episodic
 
 ```markdown
@@ -82,14 +80,14 @@ related: []
 
 # {title}
 
-## Evento
+## Event
 
-- **Quando:** {YYYY-MM-DD HH:MM}
-- **Quem:** {Claude / Codex / Usuário}
-- **Ação:** {O que foi feito de forma atômica}
+- **When:** {YYYY-MM-DD HH:MM}
+- **Who:** {Claude / Codex / User}
+- **Action:** {What was done atomically}
 
-## Resultado
-{Impacto da ação}
+## Result
+{Impact of the action}
 ```
 
 ### Schema
@@ -109,11 +107,11 @@ related: ["[[entry-1]]", "[[entry-2]]"]
 
 # {title}
 
-## Padrão Abstrato
-{A regra geral ou padrão derivado das várias entries relacionadas}
+## Abstract Pattern
+{The general rule or pattern derived from the related entries}
 
-## Aplicação
-{Como aplicar esse padrão no futuro}
+## Application
+{How to apply this pattern in the future}
 ```
 
 ### Note
@@ -133,13 +131,13 @@ related: []
 
 # {title}
 
-## Tópicos Principais
+## Main Topics
 
-{resumo dos tópicos da nota}
+{summary of the note's topics}
 
-## Detalhes
+## Details
 
-{corpo da nota}
+{body of the note}
 ```
 
 ### Idea
@@ -159,17 +157,17 @@ related: []
 
 # {title}
 
-## O que é
+## What it is
 
-{descrição rápida da ideia}
+{quick description of the idea}
 
-## Por que importa
+## Why it matters
 
-{qual o valor ou problema que resolve}
+{the value it brings or problem it solves}
 
-## Próximos passos
+## Next Steps
 
-{o que precisa acontecer para virar realidade}
+{what needs to happen to make it a reality}
 ```
 
 ### Journal
@@ -189,17 +187,17 @@ related: []
 
 # {title}
 
-## Reflexão do Dia
+## Daily Reflection
 
-{o que aconteceu, pensamentos, estado mental}
+{what happened, thoughts, mental state}
 
-## Pontos Positivos
+## Highlights
 
-- {coisa 1}
+- {item 1}
 
-## Desafios
+## Challenges
 
-- {desafio 1}
+- {challenge 1}
 ```
 
 ### Bug
@@ -219,25 +217,25 @@ related: []
 
 # {title}
 
-## Sintomas
+## Symptoms
 
-{o que foi observado — erro, comportamento inesperado}
+{what was observed — error, unexpected behavior}
 
-## Causa raiz
+## Root Cause
 
-{por que aconteceu}
+{why it happened}
 
-## Correção
+## Fix
 
-{o que foi alterado para corrigir}
+{what was changed to fix it}
 
-## Arquivos alterados
+## Changed Files
 
 - `path/to/file.ext`
 
-## Lições
+## Lessons Learned
 
-{o que observar da próxima vez}
+{what to watch out for next time}
 ```
 
 ### Decision
@@ -257,26 +255,26 @@ related: []
 
 # {title}
 
-## Contexto
+## Context
 
-{situação que exigiu a decisão}
+{situation that required the decision}
 
-## Opções consideradas
+## Options Considered
 
-1. **{opção A}** — {prós e contras}
-2. **{opção B}** — {prós e contras}
+1. **{option A}** — {pros and cons}
+2. **{option B}** — {pros and cons}
 
-## Decisão
+## Decision
 
-{qual opção foi escolhida}
+{which option was chosen}
 
-## Justificativa
+## Rationale
 
-{por que esta opção, não as outras}
+{why this option and not the others}
 
-## Consequências
+## Consequences
 
-{o que muda a partir dessa decisão — tradeoffs aceitos}
+{what changes from this decision — accepted tradeoffs}
 ```
 
 ### Feature
@@ -296,21 +294,21 @@ related: []
 
 # {title}
 
-## O que foi construído
+## What was built
 
-{descrição do que a feature faz}
+{description of what the feature does}
 
-## Abordagem
+## Approach
 
-{como foi implementado — arquitetura, padrões usados}
+{how it was implemented — architecture, patterns used}
 
-## Arquivos-chave
+## Key Files
 
-- `path/to/file.ext` — {papel do arquivo}
+- `path/to/file.ext` — {role of the file}
 
-## Pontos de atenção
+## Points of Attention
 
-{edge cases, limitações conhecidas, débito técnico}
+{edge cases, known limitations, technical debt}
 ```
 
 ### Learning
@@ -332,19 +330,19 @@ related: []
 
 ## Insight
 
-{o que foi aprendido — a lição central em 1-2 frases}
+{what was learned — the core lesson in 1-2 sentences}
 
-## Contexto
+## Context
 
-{como/onde esse conhecimento surgiu}
+{how/where this knowledge emerged}
 
-## Detalhes
+## Details
 
-{explicação mais profunda, exemplos, referências}
+{deeper explanation, examples, references}
 
-## Aplicação
+## Application
 
-{quando e como usar esse conhecimento no futuro}
+{when and how to use this knowledge in the future}
 ```
 
 ### Snippet
@@ -364,97 +362,97 @@ related: []
 
 # {title}
 
-## Quando usar
+## When to use
 
-{situação em que esse padrão se aplica}
+{situation where this pattern applies}
 
-## Código
+## Code
 
 \```{language}
-{código}
+{code}
 \```
 
-## Notas
+## Notes
 
-{variações, cuidados, alternativas}
+{variations, caveats, alternatives}
 ```
 
 ## Map of Content (MOC)
 
-Cada tipo tem um MOC em `~/.mentat/maps/{type}s.md`:
+Each type has a MOC at `~/.mentat/maps/{type}s.md`:
 
 ```markdown
 # {Type}s
 
 ## Recent
 
-- [[YYYY-MM-DD-slug]] — resumo em uma linha
+- [[YYYY-MM-DD-slug]] — one-line summary
 
-## Por projeto
+## By Project
 
 ### [[project-name]]
 
-- [[YYYY-MM-DD-slug]] — resumo em uma linha
+- [[YYYY-MM-DD-slug]] — one-line summary
 ```
 
-Ao adicionar uma entrada, insira na seção `## Recent` no topo. Quando um projeto acumular 5+ entradas na seção Recent, mova-as para uma subseção `### [[project-name]]` sob `## Por projeto`.
+When adding an entry, insert it in the `## Recent` section at the top. When a project accumulates 5+ entries in the Recent section, move them to a `### [[project-name]]` subsection under `## By Project`.
 
 ## Daily Note
 
-Notas diárias vivem em `~/.mentat/daily/YYYY-MM-DD.md`:
+Daily notes live at `~/.mentat/daily/YYYY-MM-DD.md`:
 
 ```markdown
 # {YYYY-MM-DD}
 
-## Entradas
+## Entries
 
-- [[YYYY-MM-DD-slug]] — resumo ({type})
+- [[YYYY-MM-DD-slug]] — summary ({type})
 ```
 
 ## Index
 
-O arquivo `~/.mentat/index.md` é o dashboard do vault:
+The `~/.mentat/index.md` file is the vault's dashboard:
 
 ```markdown
 # Memory Vault
 
 ## Maps of Content
 
-- [[notes]] — Notas e registros gerais
-- [[ideas]] — Ideias soltas e projetos futuros
-- [[journals]] — Reflexões e diários
-- [[bugs]] — Bugs corrigidos e sessões de debug
-- [[decisions]] — Decisões de arquitetura e design
-- [[features]] — Features construídas
-- [[learnings]] — Coisas aprendidas
-- [[snippets]] — Padrões de código e receitas
-- [[episodics]] — Eventos e ações registrados
-- [[schemas]] — Padrões abstratos sintetizados
+- [[notes]] — General notes and logs
+- [[ideas]] — Loose ideas and future projects
+- [[journals]] — Reflections and journals
+- [[bugs]] — Fixed bugs and debug sessions
+- [[decisions]] — Architecture and design decisions
+- [[features]] — Built features
+- [[learnings]] — Things learned
+- [[snippets]] — Code patterns and recipes
+- [[episodics]] — Recorded events and actions
+- [[schemas]] — Synthesized abstract patterns
 
-## Entradas recentes
+## Recent Entries
 
-(últimas 10 entradas linkadas aqui)
+(last 10 entries linked here)
 ```
 
-> **Regra de manutenção:** Insira novos links no topo da seção "Entradas recentes". Se houver mais de 10 entradas, remova a mais antiga (última da lista) para manter o limite.
+> **Maintenance rule:** Insert new links at the top of the "Recent Entries" section. If there are more than 10 entries, remove the oldest (last in the list) to keep the limit.
 
-## Convenções de nomenclatura
+## Naming Conventions
 
-| Elemento | Formato | Exemplo |
-|----------|---------|---------|
-| Arquivo de entrada | `YYYY-MM-DD-slug.md` | `2024-03-15-fix-auth-token-refresh.md` |
-| Slug | kebab-case, max 6 palavras | `fix-auth-token-refresh` |
+| Element | Format | Example |
+|---------|--------|---------|
+| Entry file | `YYYY-MM-DD-slug.md` | `2024-03-15-fix-auth-token-refresh.md` |
+| Slug | kebab-case, max 6 words | `fix-auth-token-refresh` |
 | Wiki-link | `[[kebab-case]]` | `[[react]]`, `[[retry-with-backoff]]` |
-| Tag | `#categoria/subcategoria` | `#lang/typescript`, `#infra/docker` |
+| Tag | `#category/subcategory` | `#lang/typescript`, `#infra/docker` |
 
-## Tags recomendadas
+## Recommended Tags
 
-Categorias de tag para manter consistência:
+Tag categories to maintain consistency:
 
-- `#type/` — tipo da entry, sempre incluir como primeiro tag (`#type/bug`, `#type/note`, `#type/schema`)
-- `#lang/` — linguagens (`#lang/typescript`, `#lang/python`)
+- `#type/` — entry type, always include as the first tag (`#type/bug`, `#type/note`, `#type/schema`)
+- `#lang/` — languages (`#lang/typescript`, `#lang/python`)
 - `#framework/` — frameworks (`#framework/nextjs`, `#framework/fastapi`)
-- `#infra/` — infraestrutura (`#infra/docker`, `#infra/aws`)
-- `#pattern/` — padrões (`#pattern/retry`, `#pattern/circuit-breaker`)
-- `#domain/` — domínio de negócio (`#domain/auth`, `#domain/payments`)
-- `#tool/` — ferramentas (`#tool/git`, `#tool/obsidian`)
+- `#infra/` — infrastructure (`#infra/docker`, `#infra/aws`)
+- `#pattern/` — patterns (`#pattern/retry`, `#pattern/circuit-breaker`)
+- `#domain/` — business domain (`#domain/auth`, `#domain/payments`)
+- `#tool/` — tools (`#tool/git`, `#tool/obsidian`)

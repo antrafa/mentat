@@ -28,7 +28,7 @@ Create a new entry.
 3. **Thread.** Identify every concept worth linking: people, projects, technologies, ideas, related past entries. Each becomes a `[[wiki-link]]` in kebab-case. Err toward more links — even if the target doesn't exist yet (surfaces knowledge gaps). Search the vault (`grep -rli` across `~/.mentat/entries/`) for existing mentions of the same concepts; if related entries exist, add backlinks in both directions.
 4. **Deduplicate.** Before creating, search for existing entries with similar slugs or overlapping wiki-links. If a strong match exists, ask the user whether to amend the existing entry or create a new one.
 5. **Write.** Create the entry at `~/.mentat/entries/YYYY-MM-DD-slug.md` using the template for its type (see [FORMAT.md](references/FORMAT.md)). **Use atomic bullets** instead of long paragraphs. 
-6. **Index.** Append a link line to the type's MOC at `~/.mentat/maps/{type}s.md`, today's daily note at `~/.mentat/daily/YYYY-MM-DD.md`, and the "Entradas recentes" section of `~/.mentat/index.md` (keep only the 10 most recent).
+6. **Index.** Append a link line to the type's MOC at `~/.mentat/maps/{type}s.md`, today's daily note at `~/.mentat/daily/YYYY-MM-DD.md`, and the "Recent Entries" section of `~/.mentat/index.md` (keep only the 10 most recent).
 
 Completion: dedup check done, file exists with `salience: 100` (`200` for schema) and `usage_count: 0`, backlinks added in both directions, and all MOCs/indexes updated.
 
