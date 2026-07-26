@@ -1,102 +1,99 @@
 # Mentat (Memory Vault)
 
-> *"It is by will alone I set my mind in motion."*
-> — Mentat Mantra (Dune)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Status](https://img.shields.io/badge/status-active-success.svg)
+![Format](https://img.shields.io/badge/format-obsidian--ready-blueviolet)
 
-In the *Dune* universe, after computers are banned, human **Mentats** are trained to possess supreme capabilities of computation, logic, and photographic memory. This skill acts as your personal Mentat — a persistent knowledge vault that never forgets.
+> *"It is by will alone I set my mind in motion."* — Mentat Mantra (Dune)
 
-It stores bug fixes, decisions, features, learnings, code patterns, ideas, and daily notes as Obsidian-compatible markdown with wiki-links, tags, and maps of content.
+**Mentat** is a persistent, graph-based knowledge vault designed for AI coding agents. It ensures that critical context, bug fixes, decisions, and patterns discovered during AI sessions are never lost between context windows.
 
-## What it does
+Inspired by cognitive science and agent-memory research (such as Mem-α and Engram), Mentat stores knowledge not as unstructured text, but as **Atomic Bullets** linked together in a concept graph, allowing for true reconsolidation and learning over time.
 
-When you work with an AI coding agent, knowledge gets lost between sessions. Mentat captures these as structured **atomic bullets** connected by `[[wiki-links]]`, building a searchable knowledge graph over time that learns and adapts.
+---
 
-Inspired by cognitive science and agent-memory research (like [Engram](https://github.com/softmaxdata/engram) and Mem-α), Mentat features:
-- **Core Memory:** A persistent intent anchor loaded on demand.
-- **Atomic Bullets:** Concise, trackable knowledge (no rambling paragraphs).
-- **Reconsolidation & Salience:** Memories that are useful to you grow stronger (`salience` increases); unused ones decay and get archived.
-- **Schemas:** The agent can synthesize multiple related entries into abstract patterns.
-- **Validity Gate:** The agent will refuse to store trivial or obvious information unless you insist.
+## 🧠 Core Capabilities
 
-## Operations & Usage
+- **Atomic Knowledge Base**: Information is strictly captured as concise, trackable bullets. No rambling paragraphs.
+- **Core Memory Anchoring**: An on-demand intent anchor (`core-memory.md`) grounds the agent in your overarching objective.
+- **Reconsolidation & Salience**: Memories grow stronger (`salience` increases) the more they are recalled and prove useful.
+- **Permanent vs. Transient Memory**: 
+  - Structural knowledge (`bug`, `decision`, `learning`, `schema`, `snippet`, `feature`) is **immortal**. It will never decay.
+  - Transient knowledge (`note`, `idea`, `journal`, `episodic`) decays over time if unused and is eventually sent to the archive.
+- **Schema Synthesis**: The agent can synthesize multiple scattered entries into unified, abstract pattern schemas.
+- **Validity Gate**: The system actively refuses to store trivial or obvious information unless explicitly instructed.
 
-You can invoke the skill using `/mentat` or `/brain`.
+## 📂 Vault Architecture
 
-| Operation | Command Example | What it does |
-|-----------|-----------------|--------------|
-| **Load** | `/mentat load` | Reads `core-memory.md` to ground the agent in your current overarching objective. |
-| **Remember** | `/mentat grave esse bug...` | Evaluates if the info is trivial. If valid, saves an entry using atomic bullets, threads wiki-links, and sets `salience: 100`. |
-| **Recall** | `/mentat qual foi a decisão...` | Searches the vault by content or tags. Follows threads. For every useful entry, increments its `salience` and `usage_count` (Reconsolidation). |
-| **Consolidate** | `/mentat consolide...` | Synthesizes multiple scattered entries into a unified **Schema** entry. |
-| **Groom** | `/mentat groom` | Analyzes the vault, decays salience of unused memories, and archives those that drop below the threshold. |
-| **Review** | `/mentat review` | Shows recent activity — entries from the last 7 days with stats. |
-| **Export** | `/mentat export` | Zips your entire vault to your Desktop for backup. |
-
-**Example Prompts:**
-- *" /mentat tivemos um bug de CORS hoje causado pelo Nginx, salve isso."*
-- *" /mentat load o contexto do projeto atual para conversarmos."*
-- *" /mentat groom"*
-- *" /mentat export"*
-
-## Vault structure
-
-Everything lives in `~/.mentat/`, which opens directly as an Obsidian vault:
+Everything is stored in a flat directory structure at `~/.mentat/` that opens natively as an **Obsidian** vault:
 
 ```text
 ~/.mentat/
 ├── core-memory.md    ← The overarching objective and world state
-├── entries/          ← All atomic entries (flat, connected by wiki-links)
+├── entries/          ← All atomic entries (flat, connected by [[wiki-links]])
 ├── maps/             ← Maps of Content by type (bugs.md, decisions.md, ...)
 ├── daily/            ← Daily notes (chronological index)
-└── archive/          ← Forgotten/decayed memories
+└── archive/          ← Forgotten/decayed transient memories
 ```
 
-## Installation
+## 🚀 Installation
 
-### Any CLI Agent (Antigravity, Claude, Codex)
+Mentat works with CLI-based AI agents like **Antigravity**, **Claude Code**, or **Codex**.
+
+### 1. Clone & Link
 
 ```bash
-# Clone the repo
+# Clone the repository
 git clone https://github.com/<your-user>/mentat.git
 
-# Symlink into your skills directory
+# Symlink into your agent's skills directory
 ln -s /path/to/mentat ~/.agents/skills/mentat
 ```
 
-### Manual initialization
+### 2. Initialize the Vault
 
-The vault is created automatically on first use. To initialize manually:
+The vault is automatically created on the first invocation. To initialize it manually, run:
 
 ```bash
 bash /path/to/mentat/scripts/init-vault.sh
 ```
 
-## Obsidian Integration
+## 🛠 Usage & Commands
 
-After the vault is created, open it in Obsidian:
+Trigger the skill using the `/mentat` or `/brain` slash commands followed by your prompt.
 
-1. Open Obsidian
-2. **File → Open vault**
-3. Select `~/.mentat/`
+| Command | Action | Description |
+|---------|--------|-------------|
+| `/mentat load` | **Load** | Reads `core-memory.md` to ground the agent in the current project context. |
+| `/mentat [text]` | **Remember** | Curates the input via the Validity Gate. If valid, saves as an atomic entry, threads `[[wiki-links]]`, and sets base `salience: 100`. |
+| `/mentat [query]` | **Recall** | Semantic search across the vault. Follows threads. Increments `salience` and `usage_count` for every useful entry found. |
+| `/mentat consolide` | **Consolidate** | Analyzes scattered entries and synthesizes them into a unified **Schema**. |
+| `/mentat groom` | **Groom** | Decays salience of unused transient entries. Archives those that drop below threshold. Permanent types are ignored. |
+| `/mentat review` | **Review** | Displays recent vault activity from the last 7 days. |
+| `/mentat export` | **Export** | Creates a `.zip` backup of the entire vault on your Desktop. |
 
-You get for free:
-- **Graph View** — visualize how entries connect through wiki-links.
-- **Backlinks** — see every entry that references the current one.
-- **Search** — full-text search across all entries.
+### Examples
 
-## How threading works
+- **Remembering a fix:**  
+  `> /mentat tivemos um bug de CORS hoje causado pelo Nginx, salve isso como bug.`
+- **Contextualizing:**  
+  `> /mentat load o contexto do projeto atual para conversarmos.`
+- **Grooming the vault:**  
+  `> /mentat groom`
 
-Every entry links to related concepts using `[[wiki-links]]`:
+## 🔮 Obsidian Integration
 
-```markdown
-## Causa raiz
+Mentat is designed to be a first-class citizen in [Obsidian](https://obsidian.md/).
 
-O token de refresh do [[oauth2]] expirava silenciosamente porque o
-[[redis]] TTL estava configurado para 1h em vez de 24h no projeto [[my-api]].
-```
+1. Open Obsidian.
+2. Select **Open folder as vault**.
+3. Choose `~/.mentat/`.
 
-This creates edges in Obsidian's graph. Over time, clusters emerge — you can see which technologies cause the most bugs, which projects share patterns, and how decisions connect to features.
+**Native benefits you get for free:**
+- **Graph View:** Visualize the clustering of your bugs, features, and technologies.
+- **Backlinks:** See exactly what technologies or decisions caused specific issues.
+- **Unresolved Links:** Discover knowledge gaps automatically.
 
-## License
+## 📄 License
 
-MIT
+Distributed under the MIT License. See `LICENSE` for more information.
