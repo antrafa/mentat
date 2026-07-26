@@ -53,7 +53,8 @@ Create a Schema from scattered knowledge.
 
 Maintain vault health by decaying old memories.
 
-1. **Decay.** Reduce `salience` of older entries. If an entry hasn't been used and `salience` drops below 10, move it to `~/.mentat/archive/`.
+1. **Decay.** Reduce `salience` of older entries. **CRITICAL EXCEPTION:** Never decay or archive entries of type `bug`, `decision`, `learning`, `schema`, `snippet` or `feature`. These are permanent knowledge bases. Only decay transient knowledge like `note`, `idea`, `journal`, and `episodic`.
+2. **Archive.** If a decayable entry hasn't been used and `salience` drops below 10, move it to `~/.mentat/archive/`.
 
 ## Export
 
