@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
-# Initializes the Mentat Vault directory structure at ~/.mentat
-# Safe to run multiple times — skips if vault already exists.
+# Creates or repairs the Mentat vault structure.
+#
+# Every step is individually guarded rather than skipped wholesale, so running
+# this against a vault that lost a directory or a Map of Content puts the
+# missing piece back instead of reporting success and doing nothing.
 set -euo pipefail
 
-VAULT_DIR="${HOME}/.mentat"
-
-if [[ -d "$VAULT_DIR/entries" ]]; then
-  echo "✓ Vault already exists at $VAULT_DIR"
-  exit 0
-fi
-
-echo "Creating Mentat Vault at $VAULT_DIR..."
+VAULT_DIR="${MENTAT_VAULT:-${HOME}/.mentat}"
+existed=0
+[[ -d "$VAULT_DIR/entries" ]] && existed=1
 
 mkdir -p "$VAULT_DIR"/{entries,maps,daily,archive}
 
@@ -69,8 +67,9 @@ fi
 
 # --- Obsidian configuration ---
 
-if [[ ! -d "$VAULT_DIR/.obsidian" ]]; then
-  mkdir -p "$VAULT_DIR/.obsidian"
+mkdir -p "$VAULT_DIR/.obsidian"
+
+if [[ ! -f "$VAULT_DIR/.obsidian/app.json" ]]; then
   cat > "$VAULT_DIR/.obsidian/app.json" << 'EOF'
 {
   "useMarkdownLinks": false,
@@ -80,6 +79,9 @@ if [[ ! -d "$VAULT_DIR/.obsidian" ]]; then
   "readableLineLength": true
 }
 EOF
+fi
+
+if [[ ! -f "$VAULT_DIR/.obsidian/graph.json" ]]; then
   cat > "$VAULT_DIR/.obsidian/graph.json" << 'EOF'
 {
   "collapse-filter": false,
@@ -101,6 +103,11 @@ EOF
   "lineSizeMultiplier": 1
 }
 EOF
+fi
+
+if [[ "$existed" == 1 ]]; then
+  echo "✓ Vault checked at $VAULT_DIR (missing pieces restored)"
+  exit 0
 fi
 
 echo "✓ Vault initialized at $VAULT_DIR"

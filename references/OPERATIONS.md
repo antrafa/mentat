@@ -1,91 +1,162 @@
 # Vault Maintenance Operations
 
-These operations are invoked via `/mentat {operation}`. For core operations (Remember, Recall, Load, Review, Amend), see [SKILL.md](../SKILL.md).
+Invoked as `/mentat {operation}`. For Remember, Recall, Load, Profile, Review,
+Status and Amend, see [SKILL.md](../SKILL.md).
 
-## Consolidate
+Groom, Status and Audit are implemented by `scripts/vault.py` — run it rather than
+walking the vault by hand. The rest need judgment and are described as procedures.
 
-Create a Schema from scattered knowledge.
+- [Groom](#groom) · [Audit](#audit) — scripted
+- [Consolidate](#consolidate) · [Merge](#merge) · [Split](#split) · [Forget](#forget) — judgment
+- [Export](#export) · [Import](#import) — backup
 
-1. **Analyze.** Find clusters of 3+ entries that share at least 2 common wiki-links or tags. Present the candidate cluster to the user for approval before creating the schema.
-2. **Synthesize.** Create a new `schema` entry that abstracts the patterns (e.g., "Standard Auth Flow"). Link the source entries in the `related` frontmatter.
-
-Completion: schema entry created with `salience: 200`. Source entries listed in `related` field.
+---
 
 ## Groom
 
-Maintain vault health by **fading** old memories.
+Fade idle transient memory.
 
-1. **Fade.** For each fadeable entry (`note`, `idea`, `journal`, `episodic`), compute days since `last_accessed` in frontmatter (fall back to `date` if `last_accessed` is absent). Apply exponential decay: `new_salience = floor(current_salience × 0.98 ^ days_since_last_access)`. Minimum salience is 0. **Never fade or archive** entries of type `bug`, `decision`, `learning`, `schema`, `snippet`, or `feature` — these are permanent knowledge.
-2. **Archive.** If a fadeable entry has `salience ≤ 10`, move it to `~/.mentat/archive/` and remove its line from the type MOC and daily note. Keep the file intact for potential recovery.
+```bash
+scripts/vault.py groom --dry-run   # preview
+scripts/vault.py groom
+```
 
-> **Recommended cadence:** Run groom weekly, or whenever the vault exceeds 100 entries. During Review, suggest groom to the user if fadeable entries exceed 30.
+For each fadeable entry the script computes how many days it sat unused — measured
+from whichever came later, the last access or the last decay pass — and applies
+exponential decay from there. Entries that fall to the archive threshold move to
+`~/.mentat/archive/` with their MOC, daily-note and index references removed. The
+file itself is kept, so archiving is recoverable. Permanent types are skipped
+entirely.
 
-Completion: every fadeable entry visited and salience recalculated. All entries with salience ≤ 10 archived and removed from MOCs.
+**Why the script owns this.** Anchoring decay on `decayed_at` is what makes Groom
+cadence-insensitive. Decaying from `last_accessed` alone re-applies the same idle
+window on every run: an entry groomed daily for two weeks lost 88% of its salience
+while the same entry groomed once on day 14 lost 25%. Running maintenance more
+often would delete the vault faster. `scripts/vault.py --selfcheck` asserts that
+this stays fixed.
 
-## Export
+> **Cadence:** weekly, or whenever the vault passes ~100 entries. Since results no
+> longer depend on frequency, running it more often is harmless.
 
-Export the entire vault for backup.
-
-1. **Zip.** Run `zip -r ~/Desktop/mentat_export_$(date +%Y%m%d).zip ~/.mentat -x "*.DS_Store" -x "__MACOSX/*"`. If `~/Desktop` does not exist, export to `~/` instead.
-2. **Confirm.** Inform the user that the export was created.
-
-Completion: zip file created and user informed of location.
-
-## Import
-
-Restore a vault from a previously exported backup.
-
-1. **Locate.** Ask the user for the path to the `.zip` file (or detect `~/Desktop/mentat_export_*.zip` files and present them as options).
-2. **Validate.** Unzip to a temporary location. Verify the archive contains the expected structure (`entries/`, `maps/`, `daily/`, `core-memory.md`). If invalid, abort and inform the user.
-3. **Strategy.** Ask the user whether to **replace** the current vault entirely or **merge** (import only entries that don't already exist by slug).
-4. **Apply.** Execute the chosen strategy. For merge mode, skip entries with duplicate slugs and report which were skipped.
-5. **Audit.** Run the Audit operation automatically after import.
-
-Completion: vault restored from backup. Audit run and results presented.
-
-## Forget
-
-Permanently delete an entry by user request.
-
-1. **Confirm.** Show the entry title, type, and creation date. Ask the user to confirm deletion.
-2. **Unlink.** Remove backlinks referencing this entry from all related entries. Remove the entry's line from its type MOC and daily note.
-3. **Delete.** Remove the file from `entries/` (or `archive/` if already archived).
-
-Completion: entry file deleted. All backlinks, MOC lines, and daily note references removed.
-
-## Merge
-
-Combine two redundant or complementary entries into one.
-
-1. **Identify.** The user provides two entries (by slug, title, or query). Read both entries fully.
-2. **Confirm.** Show both entries side-by-side (titles, types, dates, summaries). Ask the user which should be the **target** (survivor) and which the **source** (absorbed). If types differ, ask which type the merged entry should have.
-3. **Combine.** Merge the source's content into the target using atomic bullets. Union the `tags`, `related`, and wiki-links from both entries. Set `usage_count` to the sum of both. Set `salience` to the higher of the two values.
-4. **Relink.** Update all entries and MOCs that referenced the source to point to the target instead.
-5. **Delete source.** Remove the source file and its lines from MOCs and daily notes.
-
-Completion: source file deleted. Target updated with merged content. All references across entries and MOCs point to target.
-
-## Split
-
-Divide an entry that covers multiple distinct topics into separate atomic entries.
-
-1. **Analyze.** Read the entry. Identify the distinct topics or concepts it covers. Present the proposed split to the user for approval.
-2. **Create.** For each distinct topic, create a new entry with the appropriate type, inheriting the original's `tags`, `project`, and `date`. Each new entry gets `salience: 100` and `usage_count: 0`. Cross-link the new entries in their `related` fields.
-3. **Relink.** Update all entries that referenced the original to point to the most relevant new entry. Update MOCs and daily notes.
-4. **Archive original.** Move the original entry to `~/.mentat/archive/` with a note indicating it was split, linking to the new entries.
-
-Completion: new entries created for each topic. Original archived with split note. All references updated to point to new entries.
+Completion: script run and its summary reported. Anything archived named to the user.
 
 ## Audit
 
-Validate vault integrity and report health issues.
+Validate integrity.
 
-1. **Orphan entries.** List entries in `~/.mentat/entries/` that do not appear in any MOC (`~/.mentat/maps/*.md`).
-2. **Broken MOC references.** List MOC lines that reference entries not found in `entries/` or `archive/`.
-3. **Broken wiki-links.** Scan all entries for `[[wiki-links]]` that point to entry slugs (date-prefixed) where the target file no longer exists.
-4. **Stale daily notes.** List daily notes that reference entries no longer in `entries/`.
-5. **Report.** Present findings as a summary table with counts and file links. Offer to auto-fix what can be fixed (remove broken MOC lines, add orphan entries to their type MOC).
+```bash
+scripts/vault.py audit          # report
+scripts/vault.py audit --fix    # repair what is mechanical
+```
 
-> **Recommended cadence:** Run audit alongside groom, or after any bulk delete/archive operation.
+Five checks: orphan entries missing from every MOC, MOC lines pointing at entries
+that no longer exist, stale daily-note references, body wiki-links to deleted
+entries, and frontmatter that no longer parses.
 
-Completion: all 5 checks executed. Summary table with counts and file links presented.
+`--fix` repairs only bookkeeping damage — dropping dead references and re-indexing
+orphans. The last two checks are deliberately left alone: a wiki-link to a deleted
+entry might need the link removed, restored from `archive/`, or repointed
+elsewhere, and only reading the surrounding text tells you which. Broken
+frontmatter is the same. Fix those yourself and explain each change.
+
+> **Cadence:** alongside Groom, and after any bulk delete or archive.
+
+Completion: report presented. If `--fix` ran, say what it changed. Judgment-call
+findings resolved individually or flagged to the user.
+
+## Consolidate
+
+Distill scattered entries into a Schema.
+
+1. **Analyze.** Find clusters of 3+ entries sharing at least two wiki-links or
+   tags. Present the candidate cluster and the pattern you think it shows, and get
+   approval — a schema the user does not recognize is noise that outranks real
+   entries in recall, since schemas carry double salience.
+2. **Synthesize.** Write the schema with `vault.py write --type schema`, passing
+   `--related` with every source entry — the script mirrors the link back onto each
+   source, so they show the abstraction they fed. Keep the sources; the schema is a
+   lens on them, not a replacement.
+
+Completion: schema created with its sources listed in `related`, and the user has
+confirmed the abstraction is real.
+
+## Merge
+
+Combine two redundant entries.
+
+1. **Identify.** Read both fully. Redundancy has to be verified, not assumed from
+   similar titles.
+2. **Confirm.** Show both side by side and ask which survives (**target**) and
+   which is absorbed (**source**). If the types differ, ask which type the result
+   should carry — merging a `note` into a `decision` changes whether it can fade.
+3. **Combine.** Fold the source's content into the target as atomic bullets. Union
+   `tags`, `related` and wiki-links. Sum `usage_count`; take the higher `salience`.
+   Both entries earned their strength, so nothing should be lost by merging.
+4. **Relink.** Repoint every entry, MOC line and daily-note reference from source
+   to target. If the combined entry now covers more than its summary says, give it
+   the new one with `vault.py reindex --slug <target> --summary "..."` so all three
+   indexes agree.
+5. **Delete source.** Remove the file and its index lines, then run
+   `vault.py audit` to confirm nothing still points at it.
+
+Completion: source gone, target holds the combined content, audit clean.
+
+## Split
+
+Break a multi-topic entry into atomic ones.
+
+1. **Analyze.** Read it and identify the distinct topics. Present the proposed
+   split for approval — where the seams fall changes what each piece will be
+   findable by.
+2. **Create.** One entry per topic via `vault.py write`, inheriting the original's
+   `tags` and `project`, cross-linked through `--related`. Each starts fresh at
+   base salience: the new entries have no usage history of their own.
+3. **Relink.** Repoint references to the original at whichever new entry is most
+   relevant. Reading each reference is the only way to know which.
+4. **Archive original.** Move it to `~/.mentat/archive/` with a note recording the
+   split and linking the new entries, so the trail back is not lost.
+
+Completion: one entry per topic, original archived with a split note, references
+repointed, `vault.py audit` clean.
+
+## Forget
+
+Delete an entry permanently, at the user's request.
+
+1. **Confirm.** Show title, type, creation date and summary, and ask explicitly.
+   This is the one irreversible operation — Groom archives, Forget destroys. If the
+   user only wants it out of the way, suggest archiving instead.
+2. **Unlink.** Remove backlinks from related entries, plus its MOC and daily-note
+   lines.
+3. **Delete.** Remove the file from `entries/` (or `archive/`), then run
+   `vault.py audit` to catch references you missed.
+
+Completion: file deleted, references removed, audit clean.
+
+## Export
+
+Back up the vault.
+
+1. **Zip.** `zip -r ~/mentat_export_$(date +%Y%m%d).zip ~/.mentat -x "*.DS_Store"`.
+   Use `~/Desktop` instead if it exists.
+2. **Confirm.** Report the path and size.
+
+Completion: archive created, location reported.
+
+## Import
+
+Restore from a backup.
+
+1. **Locate.** Ask for the `.zip` path, or offer any `mentat_export_*.zip` found in
+   `~/Desktop` and `~/`.
+2. **Validate.** Unzip to a temporary directory and verify it contains `entries/`,
+   `maps/`, `daily/` and `core-memory.md`. Abort if not — better to fail than to
+   half-overwrite a working vault.
+3. **Strategy.** Ask for **replace** or **merge** (import only slugs not already
+   present). Before replacing, run Export first: replace discards the current vault.
+4. **Apply.** In merge mode, report every slug skipped as a duplicate so the user
+   can reconcile them by hand.
+5. **Audit.** Run `vault.py audit --fix`. An imported vault routinely arrives with
+   references to entries the merge skipped.
+
+Completion: vault restored, skipped duplicates reported, audit run and presented.
